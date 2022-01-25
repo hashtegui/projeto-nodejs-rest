@@ -44,5 +44,46 @@ class Atendimento {
             })
         }
     }
+
+    listar(res){
+        const sql = 'SELECT *FROM atendimentos'
+        
+        conexao.query(sql, (erro, resultados)=>{
+            if(erro){
+                res.status(400).json(erro)
+            }else{
+                res.status(200).json(resultados)
+            }
+        })
+
+    }
+
+    buscaPorId(id, res){
+        const sql = `SELECT *FROM atendimentos where id=${id}`
+
+        conexao.query(sql, (erro, resultados)=>{
+            const atendimento = resultados[0]
+            if(erro){
+                res.status(400).json(erro)
+            }else{
+                res.status(200).json(atendimento)
+            }
+        })
+    }
+
+    alterar(id, valores, res){
+        if(valores.data){
+            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:00')
+        }
+        const sql = 'UPDATE atendimentos SET ? where id=?'
+
+        conexao.query(sql, [valores, id], (erro, resultados)=>{
+            if(erro){
+                res.status(400).json(erro)
+            }else{
+                res.status(200).json(resultados)
+            }
+        })
+    }
 }
 module.exports = new Atendimento
