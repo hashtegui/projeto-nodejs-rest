@@ -39,7 +39,7 @@ class Atendimento {
                 if (erro) {
                     res.status(400).json(erro)
                 } else {
-                    res.status(201).json(resultados)
+                    res.status(201).json({...valores, id})
                 }
             })
         }
@@ -82,6 +82,18 @@ class Atendimento {
                 res.status(400).json(erro)
             }else{
                 res.status(200).json(resultados)
+            }
+        })
+    }
+    
+    deleta(id, res){
+        const sql = 'DELETE FROM atendimentos where id=?'
+
+        conexao.query(sql, id, (erro, resultados)=>{
+            if(erro){
+                res.status(400).json(erro)
+            }else{
+                res.status(200).json({id})
             }
         })
     }
